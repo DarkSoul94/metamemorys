@@ -1,0 +1,17 @@
+app:
+  http_port: 8888
+  release: false
+  log:
+    dir: "logs"
+    file: "app.log"
+  auth:
+    signing_key: ""
+    ttl: 7200
+  db:
+    login: "postgres"
+    pass: "postgres"
+    host: "localhost"
+    port: 5432
+    name: ""
+  store:
+    path: "./store"

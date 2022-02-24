@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: postgres_db
+    build: ./postgres
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5442:5432
+    networks:
+      - metamemory
+
+  admin:
+    container_name: db_web_adminer
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8090:8080
+    networks:
+      - metamemory
+
+  backend:
+    container_name: backend
+    build: ./backend
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - ./data/store:/usr/local/bin/store
+    ports:
+      - 8000:8000
+    networks:
+      - metamemory
+  
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - 3001:3001
+    networks:
+      - metamemory
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    restart: always
+    depends_on:
+      - nginx
+    ports:
+      - 3000:3000
+    networks:
+      - metamemory
+
+networks:
+  metamemory:

@@ -1,0 +1,4 @@
+data
+backend/config/config.yml
+backend/logs
+frontend/node_modules
